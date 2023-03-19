@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">MovieDD</string>
+    <string name="app_title">TvShowExplorer</string>
+
+    <string name="tv_show_list_not_available">No TV Shows available, pull down to refresh</string>
+    <string name="dialog_loading">Loading Tv Shows, please wait</string>
+    <string name="sort_by">Sort by</string>
+    <string name="alphabetically">Alphabetically</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="air_date">Air Date</string>
+    <string name="first_aired_on">First Aired on:</string>
+    <string name="description">Description</string>
+    <string name="view">View</string>
 </resources>

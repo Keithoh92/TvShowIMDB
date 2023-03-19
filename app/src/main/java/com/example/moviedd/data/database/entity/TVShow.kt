@@ -1,0 +1,15 @@
+package com.example.moviedd.data.database.entity
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "tv_shows")
+data class TVShow(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+    val title: String,
+    val imagePath: String,
+    val airDate: String,
+    val description: String,
+    val rating: Double
+)
