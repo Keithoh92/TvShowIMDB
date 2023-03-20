@@ -63,13 +63,13 @@ I am always open to constructive criticism and feedback to see where I can impro
 I hope this app demonstrates my ability and skills adequetly.
 
 
-Built using:
-Kotlin
-Jetpack compose
-MVVM
-Coroutines
-Room
-Retrofit
-Dagger/Hilt
-Clean Arhitecture
-Mockk unit testing
+Built using: <br />
+Kotlin <br />
+Jetpack compose <br />
+MVVM <br />
+Coroutines <br />
+Room <br />
+Retrofit <br />
+Dagger/Hilt <br />
+Clean Arhitecture <br />
+Mockk unit testing <br />
