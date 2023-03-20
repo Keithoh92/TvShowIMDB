@@ -1,6 +1,5 @@
 package com.example.moviedd.ui.tv.viewModel
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -57,10 +56,11 @@ class TvShowScreenViewModel @Inject constructor(
     }
 
     private fun updateTvShowsDescriptionsMinimisedMap(tvShows: List<ShowInfo>): Map<Int, Boolean> {
-        val updatedMap = tvShowScreenUIState.descriptionMinimised.toMutableMap()
+        val updatedMap = mutableMapOf<Int, Boolean>()
         tvShows.forEach {
             updatedMap[it.id] = true
         }
+
         return updatedMap
     }
 

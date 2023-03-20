@@ -35,7 +35,7 @@ class TvShowApiRepositoryTest : BaseTest() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `downloadTvShows - emits a list of ShowInfo objects downloaded from the TMDB api`() = runTest {
+    fun `downloadTvShows() - emits a list of ShowInfo objects downloaded from the TMDB api`() = runTest {
         val mockApiResponse = mockk<Response<ApiResponse>>()
         every { mockApiResponse.body() } returns ApiResponse(1, mockShowDaoList(), 1, 1)
         coEvery { tvShowsApi.getTopRatedTvShows("25a8f80ba018b52efb64f05140f6b43c") } returns mockApiResponse

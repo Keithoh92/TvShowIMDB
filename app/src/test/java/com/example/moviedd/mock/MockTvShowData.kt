@@ -66,8 +66,8 @@ fun mockShowInfoList(): List<ShowInfo> {
 
 fun mockDescriptionMinimisedMap(): Map<Int, Boolean> {
     val mockMap = mutableMapOf<Int, Boolean>()
-    mockMap[0] = false
-    mockMap[1] = false
+    mockMap[0] = true
+    mockMap[1] = true
 
     return mockMap
 }

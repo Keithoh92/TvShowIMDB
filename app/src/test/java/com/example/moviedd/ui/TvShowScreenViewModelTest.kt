@@ -4,6 +4,7 @@ import com.example.moviedd.BaseTest
 import com.example.moviedd.domain.api.repository.TvShowApiRepo
 import com.example.moviedd.domain.database.repository.TvShowDBRepo
 import com.example.moviedd.domain.model.ShowInfo
+import com.example.moviedd.mock.mockDescriptionMinimisedMap
 import com.example.moviedd.mock.mockShowInfoList
 import com.example.moviedd.ui.tv.event.TvShowScreenEvent
 import com.example.moviedd.ui.tv.state.TvShowScreenUIState
@@ -63,7 +64,7 @@ class TvShowScreenViewModelTest : BaseTest() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `onRefresh - downloads the tvShows from API and saves the tvShows in the DB and updates the UIState`() = runTest {
+    fun `onRefresh() - downloads the tvShows from API and saves the tvShows in the DB and updates the UIState`() = runTest {
         coEvery { tvShowDbRepo.getTvShows() } returns mockShowInfoList()
 
         target.onEvent(TvShowScreenEvent.OnRefresh)
@@ -78,7 +79,7 @@ class TvShowScreenViewModelTest : BaseTest() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `onSortOptionChosen - when user chooses sort option - sort by - Alphabetically - sort the tvShowList in alphabetical order`() = runTest {
+    fun `onSortOptionChosen() - when user chooses sort option - sort by - Alphabetically - sort the tvShowList in alphabetical order`() = runTest {
         coEvery { tvShowDbRepo.getTvShows() } returns mockShowInfoList()
 
         target.onEvent(TvShowScreenEvent.OnRefresh)
@@ -96,7 +97,7 @@ class TvShowScreenViewModelTest : BaseTest() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `onSortOptionChosen - when user chooses sort option - sort by - Air Date - sort the tvShowList by the air date`() = runTest {
+    fun `onSortOptionChosen() - when user chooses sort option - sort by - Air Date - sort the tvShowList by the air date`() = runTest {
         coEvery { tvShowDbRepo.getTvShows() } returns mockShowInfoList()
 
         target.onEvent(TvShowScreenEvent.OnRefresh)
@@ -114,7 +115,7 @@ class TvShowScreenViewModelTest : BaseTest() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `onSortOptionChosen - when user chooses sort option - sort by - Top Rated - sort the tvShowList by the air date`() = runTest {
+    fun `onSortOptionChosen() - when user chooses sort option - sort by - Top Rated - sort the tvShowList by the air date`() = runTest {
         coEvery { tvShowDbRepo.getTvShows() } returns mockShowInfoList()
 
         target.onEvent(TvShowScreenEvent.OnRefresh)
@@ -131,7 +132,18 @@ class TvShowScreenViewModelTest : BaseTest() {
     }
 
     @Test
-    fun `updateCardLayout - toggles the state of isGridView`() {
+    fun `onDescriptionClicked() - uses the showId of the clicked description to update the showId map value to false`() {
+        every { tvShowScreenUIState.descriptionMinimised } returns mockDescriptionMinimisedMap()
+
+        target.onEvent(TvShowScreenEvent.OnDescriptionClicked(0, true))
+
+        val result = target.tvShowScreenUIState.descriptionMinimised[0]
+
+        assertEquals(false, result)
+    }
+
+    @Test
+    fun `updateCardLayout() - toggles the state of isGridView`() {
         // before
         val isGridViewBefore = target.tvShowScreenUIState.isGridView
 

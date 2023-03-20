@@ -38,7 +38,7 @@ class TvShowDbRepositoryTest : BaseTest() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `getTvShows - returns a list of TvShows from TvShows table`() = runTest {
+    fun `getTvShows() - returns a list of TvShows from TvShows table`() = runTest {
         every { tvShowDao.getAllTvShows() } returns mockTvShowList()
 
         val result = tvShowDBRepo.getTvShows()
@@ -51,7 +51,7 @@ class TvShowDbRepositoryTest : BaseTest() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `getTvShows - returns a emptyList when nothing is in the DB`() = runTest {
+    fun `getTvShows() - returns a emptyList when nothing is in the DB`() = runTest {
         every { tvShowDao.getAllTvShows() } returns emptyList()
 
         val result = tvShowDBRepo.getTvShows()
@@ -64,7 +64,7 @@ class TvShowDbRepositoryTest : BaseTest() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `insert - does insert a tvShow when one doesn't already exist`() = runTest {
+    fun `insert() - does insert a tvShow when one doesn't already exist`() = runTest {
         val showInfo = mockk<ShowInfo>()
         every { showInfo.title } returns mockShowInfo.title
         every { showInfo.imagePath } returns mockShowInfo.imagePath
@@ -85,7 +85,7 @@ class TvShowDbRepositoryTest : BaseTest() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `insert - does not insert a tvShow when one already exists`() = runTest {
+    fun `insert() - does not insert a tvShow when one already exists`() = runTest {
         val showInfo = mockk<ShowInfo>()
         every { showInfo.title } returns mockShowInfo.title
         every { tvShowDao.checkExists(mockShowInfo.title) } returns 1
