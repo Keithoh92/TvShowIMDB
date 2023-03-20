@@ -57,6 +57,7 @@ Hide the API_KEY on GitHub when I figure out how to do it.<br /><br /><br />
 What I would do if I had more time:<br />
 Ensure the dark mode and light mode themes are properly configured and use those as the colouring schemes rather than the Colors.kt class
 <br />
+Maybe add a useCase for the API call to add another layer of abstraction.
 <br />
 I think I have implemented everything I wanted to with this app.<br />
 I am always open to constructive criticism and feedback to see where I can improve from another devs perspective.<br />
