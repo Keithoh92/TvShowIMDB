@@ -52,7 +52,7 @@ The app uses Dagger/Hilt for dependency injection.
 I have not included RxJava in my implementation as I believe using MutableStates to be an appropriate use case for this particular app for observing and updating the state of the UI.
 <br /><br />
 TODO:<br />
-Hide the API_KEY on GitHub when I figure out how to do it.<br /><br /><br />
+Hide the API_KEY on GitHub when I figure out how to do it.<br /><br />
 
 What I would do if I had more time:<br />
 Ensure the dark mode and light mode themes are properly configured and use those as the colouring schemes rather than the Colors.kt class
@@ -60,6 +60,11 @@ Ensure the dark mode and light mode themes are properly configured and use those
 Maybe add a useCase for the API call to add another layer of abstraction.
 <br />
 Add previews for all composables <br />
+
+<br />
+Nice to haves:
+Add a search bar so user can search for a title
+Add a bottomSheet that contains filters to filter the tvShows may
 
 
 I am always open to constructive criticism and feedback to see where I can improve from another devs perspective.<br />
