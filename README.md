@@ -56,11 +56,12 @@ Hide the API_KEY on GitHub when I figure out how to do it.<br /><br /><br />
 
 What I would do if I had more time:<br />
 Ensure the dark mode and light mode themes are properly configured and use those as the colouring schemes rather than the Colors.kt class
-<br /><br />
+<br />
+<br />
 I think I have implemented everything I wanted to with this app.<br />
 I am always open to constructive criticism and feedback to see where I can improve from another devs perspective.<br />
 <br />
-I hope this app demonstrates my ability and skills adequetly.<br /><br />
+I hope this app demonstrates my ability and skills adequetly, and that its easily readable and understandable<br /><br />
 
 
 Built using: <br />
@@ -73,3 +74,5 @@ Retrofit <br />
 Dagger/Hilt <br />
 Clean Arhitecture <br />
 Mockk unit testing <br />
+Coil library <br />
+SwipeRefresh library
