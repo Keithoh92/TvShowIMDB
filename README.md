@@ -60,6 +60,8 @@ Ensure the dark mode and light mode themes are properly configured and use those
 Maybe add a useCase for the API call to add another layer of abstraction.
 <br />
 Add previews for all composables <br />
+Paging <br />
+Caching <br />
 
 <br />
 Nice to haves:
@@ -76,9 +78,11 @@ Built using: <br />
 Kotlin <br />
 Jetpack compose <br />
 MVVM <br />
-Coroutines <br />
+Coroutines and flow<br />
 Room <br />
 Retrofit <br />
+GSON <br />
+Navigation <br />
 Dagger/Hilt <br />
 Clean Arhitecture <br />
 Mockk unit testing <br />
