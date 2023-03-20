@@ -59,7 +59,9 @@ Ensure the dark mode and light mode themes are properly configured and use those
 <br />
 Maybe add a useCase for the API call to add another layer of abstraction.
 <br />
-I think I have implemented everything I wanted to with this app.<br />
+Add previews for all composables <br />
+
+
 I am always open to constructive criticism and feedback to see where I can improve from another devs perspective.<br />
 <br />
 I hope this app demonstrates my ability and skills adequetly, and that its easily readable and understandable<br /><br />
