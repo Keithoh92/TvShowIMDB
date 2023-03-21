@@ -49,7 +49,7 @@ loading them into an AsyncImage composable on the UI for each tvShow cardview.<b
 <br />
 The app uses Dagger/Hilt for dependency injection.
 <br />
-I have not included RxJava in my implementation as I believe using MutableStates to be an appropriate use case for this particular app for observing and updating the state of the UI.
+I have not included RxJava in my implementation as I believe using coroutines flow and MutableStates to be an appropriate use case for this particular app for observing and updating the state of the UI.
 <br /><br />
 TODO:<br />
 Hide the API_KEY on GitHub when I figure out how to do it.<br /><br />
