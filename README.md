@@ -62,11 +62,16 @@ Maybe add a useCase for the API call to add another layer of abstraction.
 Add previews for all composables <br />
 Paging <br />
 Caching <br />
+There is definitely some areas in the code that I could improve given more time. <br />
+I only tested on one device in portrait mode, so I could probably look at ensuring it looks good on all devices and functions as it supposed to
+<br />
+with configuration changes etc.
+<br />
 
 <br />
-Nice to haves:
-Add a search bar so user can search for a title
-Add a bottomSheet that contains filters to filter the tvShows may
+Nice to haves:<br />
+Add a search bar so user can search for a title<br />
+Add a bottomSheet that contains filters to filter the tvShows may<br />
 
 
 I am always open to constructive criticism and feedback to see where I can improve from another devs perspective.<br />
