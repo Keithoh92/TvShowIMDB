@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.moviedd.data.database.dao.TVShowDao
 import com.example.moviedd.data.database.entity.TVShow
 
-@Database(entities = [TVShow::class], version = 1, exportSchema = false)
+@Database(entities = [TVShow::class], version = 2, exportSchema = false)
 abstract class TVShowDatabase: RoomDatabase() {
 
     abstract val tvShowDao: TVShowDao
