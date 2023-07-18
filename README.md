@@ -51,32 +51,6 @@ The app uses Dagger/Hilt for dependency injection.
 <br />
 I have not included RxJava in my implementation as I believe using coroutines flow and MutableStates to be an appropriate use case for this particular app for observing and updating the state of the UI.
 <br /><br />
-TODO:<br />
-Hide the API_KEY on GitHub when I figure out how to do it.<br /><br />
-
-What I would do if I had more time:<br />
-Ensure the dark mode and light mode themes are properly configured and use those as the colouring schemes rather than the Colors.kt class
-<br />
-Maybe add a useCase for the API call to add another layer of abstraction.
-<br />
-Add previews for all composables <br />
-Paging <br />
-Caching <br />
-There is definitely some areas in the code that I could improve given more time. <br />
-I only tested on one device in portrait mode, so I could probably look at ensuring it looks good on all devices and functions as it supposed to
-<br />
-with configuration changes etc.
-<br />
-
-<br />
-Nice to haves:<br />
-Add a search bar so user can search for a title<br />
-Add a bottomSheet that contains filters to filter the tvShows may<br />
-
-
-I am always open to constructive criticism and feedback to see where I can improve from another devs perspective.<br />
-<br />
-I hope this app demonstrates my ability and skills adequetly, and that its easily readable and understandable<br /><br />
 
 
 Built using: <br />
