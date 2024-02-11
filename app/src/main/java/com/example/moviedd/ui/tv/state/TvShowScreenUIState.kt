@@ -10,5 +10,6 @@ data class TvShowScreenUIState(
     val noTvShowsReturned: Boolean = false,
     val isRefreshing: Boolean = false,
     val isLoading: Boolean = true,
-    val error: String = ""
+    val error: String = "",
+    val searchedTvShows: List<String> = emptyList()
 )

@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviedd.common.Resource
+import com.example.moviedd.data.database.helper.AutoCompleteSearchSystem
 import com.example.moviedd.domain.api.repository.TvShowApiRepo
 import com.example.moviedd.domain.database.repository.TvShowDBRepo
 import com.example.moviedd.domain.model.ShowInfo
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TvShowScreenViewModel @Inject constructor(
     private val tvShowDBRepository: TvShowDBRepo,
-    private val tvShowApiRepo: TvShowApiRepo
+    private val tvShowApiRepo: TvShowApiRepo,
+    private val autoCompleteSearchSystem: AutoCompleteSearchSystem
 ): ViewModel() {
 
     var tvShowScreenUIState by mutableStateOf(TvShowScreenUIState())
@@ -36,7 +38,19 @@ class TvShowScreenViewModel @Inject constructor(
             is TvShowScreenEvent.SetScrollToStopToFalse -> tvShowScreenUIState = tvShowScreenUIState.copy(shouldScrollToTop = false)
             is TvShowScreenEvent.OnViewChanged -> updateCardLayout(event.isGridView)
             is TvShowScreenEvent.OnRefresh -> onRefresh()
+            is TvShowScreenEvent.OnSearchTextChanged -> onSearchTextChanged(event.prefix)
+            is TvShowScreenEvent.OnSelectSearchedTvShow -> onSelectSearchedTvShow(event.title)
         }
+    }
+
+    private fun onSelectSearchedTvShow(title: String) {
+        TODO("Not yet implemented")
+    }
+
+    private fun onSearchTextChanged(prefix: String) {
+        var tvShows =  autoCompleteSearchSystem.search(prefix.lowercase())
+        if (prefix.isBlank()) tvShows = emptyList()
+        tvShowScreenUIState = tvShowScreenUIState.copy(searchedTvShows = tvShows)
     }
 
     init {
@@ -139,6 +153,9 @@ class TvShowScreenViewModel @Inject constructor(
     }
 
     private suspend fun saveTvShows(tvShows: List<ShowInfo>) {
-        tvShows.map { tvShowDBRepository.insert(it) }
+        tvShows.map {
+            tvShowDBRepository.insert(it)
+            autoCompleteSearchSystem.insert(it.title.lowercase())
+        }
     }
 }

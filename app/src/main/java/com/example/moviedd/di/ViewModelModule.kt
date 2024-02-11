@@ -3,6 +3,7 @@ package com.example.moviedd.di
 import com.example.moviedd.data.api.remote.TVShowsApi
 import com.example.moviedd.data.api.repository.TvShowApiRepositoryImpl
 import com.example.moviedd.data.database.dao.TVShowDao
+import com.example.moviedd.data.database.helper.AutoCompleteSearchSystem
 import com.example.moviedd.data.database.repository.TvShowDBRepositoryImpl
 import com.example.moviedd.domain.api.repository.TvShowApiRepo
 import com.example.moviedd.domain.database.repository.TvShowDBRepo
@@ -26,5 +27,11 @@ object ViewModelModule {
     @ViewModelScoped
     fun provideTvShowApiRepo(tvShowsApi: TVShowsApi): TvShowApiRepo {
         return TvShowApiRepositoryImpl(tvShowsApi)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideAutoCompleteSystem(): AutoCompleteSearchSystem {
+        return AutoCompleteSearchSystem()
     }
 }

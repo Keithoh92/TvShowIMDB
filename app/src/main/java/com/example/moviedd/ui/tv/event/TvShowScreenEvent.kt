@@ -8,4 +8,6 @@ sealed class TvShowScreenEvent : BaseComposeEvent {
     object SetScrollToStopToFalse : TvShowScreenEvent()
     object OnRefresh : TvShowScreenEvent()
     data class OnViewChanged(val isGridView: Boolean) : TvShowScreenEvent()
+    data class OnSearchTextChanged(val prefix: String) : TvShowScreenEvent()
+    data class OnSelectSearchedTvShow(val title: String): TvShowScreenEvent()
 }
