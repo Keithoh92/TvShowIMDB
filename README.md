@@ -70,7 +70,7 @@ SwipeRefresh library
 
 ![Screenshot_20240216_162806_MovieDD](https://github.com/Keithoh92/TvShowIMDB/assets/44530004/54d594c5-f787-4ab8-a11b-a0916fac1d7c)
 ![Screenshot_20240216_162800_MovieDD](https://github.com/Keithoh92/TvShowIMDB/assets/44530004/17833f85-5823-4947-a118-5ceef7fb39a9)
-![Screenshot_20240216_162812_MovieDD](https://github.com/Keithoh92/TvShowIMDB/assets/44530004/17da0602-ad51-4980-a313-415a5d862ec1)
+![Screenshot_20240216_162812_MovieDD](https://github.com/Keithoh92/TvShowIMDB/assets/44530004/24bb16b6-6b20-4cef-b9b2-5153b54c6b51)
 ![Screenshot_20240216_162825_MovieDD](https://github.com/Keithoh92/TvShowIMDB/assets/44530004/c9185993-3149-4ca0-9841-3278333f2b5a)
 
 
