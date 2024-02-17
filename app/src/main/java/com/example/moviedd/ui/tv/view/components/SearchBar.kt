@@ -3,7 +3,9 @@ package com.example.moviedd.ui.tv.view.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -30,11 +31,11 @@ import com.example.moviedd.ui.theme.AppTheme
 import com.example.moviedd.ui.theme.spacing16
 import com.example.moviedd.ui.tv.event.TvShowScreenEvent
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBar(
+    modifier:  Modifier,
     onEvent: (TvShowScreenEvent) -> Unit,
-    suggestions: List<String>,
+    suggestions: List<Pair<Int, String>>,
     hideKeyboard: Boolean,
     onFocusClear: () -> Unit = {}
 ) {
@@ -45,7 +46,7 @@ fun SearchBar(
         color = Color.White,
         shape = RoundedCornerShape(15.dp),
         border = BorderStroke(1.dp, Color.LightGray),
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier
     ) {
         Column {
             TextField(
@@ -65,21 +66,26 @@ fun SearchBar(
                 keyboardActions = KeyboardActions(onSearch = { focusManager.clearFocus() })
 
             )
-
             AnimatedVisibility(
                 visible = suggestions.isNotEmpty(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.LightGray.copy(alpha = 0.5f))
             ) {
-                LazyColumn(content = {
+                LazyColumn(
+                    content = {
                     items(suggestions.size) {
                         val tvShow = suggestions[it]
-                        Text(
-                            text = tvShow.replaceFirstChar { char -> char.titlecase() },
-                            color = Color.Blue.copy(alpha = 0.5f),
-                            modifier = Modifier.padding(spacing16)
-                        )
+                        Row(
+                            modifier.clickable {
+                                onEvent(TvShowScreenEvent.OnSelectSearchedTvShow(tvShow.first))
+                            }.padding(spacing16)
+                        ) {
+                            Text(
+                                text = tvShow.second.replaceFirstChar { char -> char.titlecase() },
+                                color = Color.Blue.copy(alpha = 0.5f)
+                            )
+                        }
                     }
                 })
             }
@@ -87,6 +93,7 @@ fun SearchBar(
     }
     if (hideKeyboard || suggestions.isEmpty()) {
         focusManager.clearFocus()
+        searchText = ""
         onFocusClear()
     }
 }
@@ -96,8 +103,9 @@ fun SearchBar(
 fun SearchBarPreview() {
     AppTheme {
         SearchBar(
+            modifier = Modifier,
             onEvent = {},
-            suggestions = listOf("Star wars", "StarTrek"),
+            suggestions = listOf(Pair(1, "arcane"), Pair(2, "Avatar")),
             hideKeyboard = false,
             onFocusClear = {}
         )

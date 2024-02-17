@@ -17,6 +17,7 @@ import com.example.moviedd.ui.tv.view.components.tvShowListItemCardViewLayouts.T
 fun LazyVerticalColumnHolder(
     tvShowList: List<ShowInfo>,
     tvShowScreenUIState: TvShowScreenUIState,
+    hideKeyboard: () -> Unit,
     onEvent: (BaseComposeEvent) -> Unit
 ) {
 
@@ -26,6 +27,14 @@ fun LazyVerticalColumnHolder(
         listState.animateScrollToItem(0)
         onEvent(TvShowScreenEvent.SetScrollToStopToFalse)
     }
+
+    LaunchedEffect(key1 = tvShowScreenUIState.scrollToShowByID.first, block = {
+        if (tvShowScreenUIState.scrollToShowByID.first) {
+            listState.animateScrollToItem(tvShowScreenUIState.scrollToShowByID.second-1)
+            onEvent(TvShowScreenEvent.SetScrollToIdToFalse)
+            hideKeyboard.invoke()
+        }
+    })
 
     LazyColumn(
             state = listState,

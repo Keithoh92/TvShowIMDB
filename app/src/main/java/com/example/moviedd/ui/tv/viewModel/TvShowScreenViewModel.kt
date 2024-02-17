@@ -1,8 +1,5 @@
 package com.example.moviedd.ui.tv.viewModel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviedd.common.Resource
@@ -15,6 +12,9 @@ import com.example.moviedd.ui.tv.event.TvShowScreenEvent
 import com.example.moviedd.ui.tv.state.TvShowScreenUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -26,8 +26,8 @@ class TvShowScreenViewModel @Inject constructor(
     private val autoCompleteSearchSystem: AutoCompleteSearchSystem
 ): ViewModel() {
 
-    var tvShowScreenUIState by mutableStateOf(TvShowScreenUIState())
-        private set
+    private val _uiState = MutableStateFlow(TvShowScreenUIState())
+    val uiState = _uiState.asStateFlow()
 
     private var tvShowsList = listOf<ShowInfo>()
 
@@ -35,22 +35,13 @@ class TvShowScreenViewModel @Inject constructor(
         when (event) {
             is TvShowScreenEvent.OnSortOptionChosen -> onSortOptionChosen(event.sortingOption)
             is TvShowScreenEvent.OnDescriptionClicked -> onDescriptionClicked(event.showId, event.isMinimised ?: false)
-            is TvShowScreenEvent.SetScrollToStopToFalse -> tvShowScreenUIState = tvShowScreenUIState.copy(shouldScrollToTop = false)
+            is TvShowScreenEvent.SetScrollToStopToFalse -> _uiState.update { it.copy(shouldScrollToTop = false) }
             is TvShowScreenEvent.OnViewChanged -> updateCardLayout(event.isGridView)
             is TvShowScreenEvent.OnRefresh -> onRefresh()
             is TvShowScreenEvent.OnSearchTextChanged -> onSearchTextChanged(event.prefix)
-            is TvShowScreenEvent.OnSelectSearchedTvShow -> onSelectSearchedTvShow(event.title)
+            is TvShowScreenEvent.OnSelectSearchedTvShow -> onSelectSearchedTvShow(event.id)
+            is TvShowScreenEvent.SetScrollToIdToFalse -> resetScrollToId()
         }
-    }
-
-    private fun onSelectSearchedTvShow(title: String) {
-        TODO("Not yet implemented")
-    }
-
-    private fun onSearchTextChanged(prefix: String) {
-        var tvShows =  autoCompleteSearchSystem.search(prefix.lowercase())
-        if (prefix.isBlank()) tvShows = emptyList()
-        tvShowScreenUIState = tvShowScreenUIState.copy(searchedTvShows = tvShows)
     }
 
     init {
@@ -60,13 +51,14 @@ class TvShowScreenViewModel @Inject constructor(
 
     private fun updateScreenUIState() = viewModelScope.launch {
         val tvShows = tvShowDBRepository.getTvShows()
-        if (tvShows.isEmpty()) { tvShowScreenUIState = tvShowScreenUIState.copy(noTvShowsReturned = true) }
+        tvShowsList = tvShows
+        if (tvShows.isEmpty()) { _uiState.update { it.copy(noTvShowsReturned = true) } }
 
         val updatedMap = updateTvShowsDescriptionsMinimisedMap(tvShows)
 
-        tvShowScreenUIState = tvShowScreenUIState.copy(tvShowList = tvShows, descriptionMinimised = updatedMap)
+        _uiState.update { it.copy(tvShowList = tvShows, descriptionMinimised = updatedMap) }
         delay(2000)
-        tvShowScreenUIState = tvShowScreenUIState.copy(isLoading = false, isRefreshing = false)
+        _uiState.update { it.copy(isLoading = false, isRefreshing = false) }
     }
 
     private fun updateTvShowsDescriptionsMinimisedMap(tvShows: List<ShowInfo>): Map<Int, Boolean> {
@@ -78,25 +70,54 @@ class TvShowScreenViewModel @Inject constructor(
         return updatedMap
     }
 
+    private fun resetScrollToId() {
+        _uiState.update { it.copy(scrollToShowByID = Pair(false, -1)) }
+    }
+
+    private fun onSelectSearchedTvShow(id: Int) {
+        _uiState.update { it.copy(
+            scrollToShowByID = Pair(true, id),
+            searchedTvShows = emptyList()
+        )}
+    }
+
+    private fun onSearchTextChanged(prefix: String) {
+        val tvShows =  autoCompleteSearchSystem.search(prefix.lowercase())
+
+        val listOfSearchedTvShowsAndIds = tvShows.map { suggestedTvShow ->
+            val tvShowId = tvShowsList.find {
+                it.title.lowercase() == suggestedTvShow.lowercase()
+            }?.id ?: -1
+
+            Pair(tvShowId, suggestedTvShow)
+        }
+
+        _uiState.update {
+            it.copy(
+                searchedTvShows = if (prefix.isBlank()) emptyList() else listOfSearchedTvShowsAndIds
+            )
+        }
+    }
+
     private fun updateCardLayout(gridView: Boolean) {
-        tvShowScreenUIState = tvShowScreenUIState.copy(isGridView = !gridView)
+        _uiState.update { it.copy(isGridView = !gridView) }
     }
 
     private fun onRefresh() {
-        tvShowScreenUIState = tvShowScreenUIState.copy(isRefreshing = true)
+        _uiState.update { it.copy(isRefreshing = true) }
         getTvShowsFromApi()
         updateScreenUIState()
     }
 
     private fun onDescriptionClicked(showId: Int, isMinimised: Boolean) {
-        val updatedMap = tvShowScreenUIState.descriptionMinimised.toMutableMap()
+        val updatedMap = uiState.value.descriptionMinimised.toMutableMap()
         updatedMap[showId] = !isMinimised
 
-        tvShowScreenUIState = tvShowScreenUIState.copy(descriptionMinimised = updatedMap)
+        _uiState.update { it.copy(descriptionMinimised = updatedMap) }
     }
 
     private fun onSortOptionChosen(sortingOption: String) {
-        tvShowScreenUIState = tvShowScreenUIState.copy(shouldScrollToTop = true)
+        _uiState.update { it.copy(shouldScrollToTop = true) }
         when (sortingOption) {
             "Alphabetically" -> sortTvShowsAlphabetically()
             "Top Rated" -> sortByRating()
@@ -125,7 +146,7 @@ class TvShowScreenViewModel @Inject constructor(
 
     private fun updateMapAndSortUITvShowList() {
         val updatedMap = updateTvShowsDescriptionsMinimisedMap(tvShowsList)
-        tvShowScreenUIState = tvShowScreenUIState.copy(tvShowList = tvShowsList, descriptionMinimised = updatedMap)
+        _uiState.update { it.copy(tvShowList = tvShowsList, descriptionMinimised = updatedMap) }
     }
 
     private fun getTvShowsFromApi() = runBlocking {
@@ -141,12 +162,12 @@ class TvShowScreenViewModel @Inject constructor(
                     }
                 }
                 is Resource.Error -> {
-                    tvShowScreenUIState = tvShowScreenUIState.copy(
+                    _uiState.update { it.copy(
                         error = result.message ?: "An unexpected error occurred"
-                    )
+                    ) }
                 }
                 is Resource.Loading -> {
-                    tvShowScreenUIState = tvShowScreenUIState.copy(isLoading = true)
+                    _uiState.update { it.copy(isLoading = true) }
                 }
             }
         }

@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             Home(
-                tvShowScreenViewModel.tvShowScreenUIState,
+                viewModel = tvShowScreenViewModel,
                 onEvent = tvShowScreenViewModel::onEvent
             )
         }
