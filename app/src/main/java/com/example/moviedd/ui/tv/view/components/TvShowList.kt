@@ -12,6 +12,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 @Composable
 fun TvShowList(
     tvShowScreenUIState: TvShowScreenUIState,
+    hideKeyboard: () -> Unit,
     onEvent: (BaseComposeEvent) -> Unit
 ) {
     val tvShowList = tvShowScreenUIState.tvShowList
@@ -23,9 +24,19 @@ fun TvShowList(
         onRefresh = { onEvent(TvShowScreenEvent.OnRefresh) }
     ) {
         if (tvShowScreenUIState.isGridView) {
-            LazyVerticalGridHolder(tvShowList = tvShowList, tvShowScreenUIState = tvShowScreenUIState, onEvent = onEvent)
+            LazyVerticalGridHolder(
+                tvShowList = tvShowList,
+                tvShowScreenUIState = tvShowScreenUIState,
+                hideKeyboard = hideKeyboard,
+                onEvent = onEvent
+            )
         } else {
-            LazyVerticalColumnHolder(tvShowList = tvShowList, tvShowScreenUIState = tvShowScreenUIState, onEvent = onEvent)
+            LazyVerticalColumnHolder(
+                tvShowList = tvShowList,
+                tvShowScreenUIState = tvShowScreenUIState,
+                hideKeyboard = hideKeyboard,
+                onEvent = onEvent
+            )
         }
     }
 }
@@ -36,7 +47,8 @@ fun TvShowListPreview() {
     AppTheme {
         TvShowList(
             tvShowScreenUIState = TvShowScreenUIState(),
-            onEvent = {}
+            onEvent = {},
+            hideKeyboard = {}
         )
     }
 }

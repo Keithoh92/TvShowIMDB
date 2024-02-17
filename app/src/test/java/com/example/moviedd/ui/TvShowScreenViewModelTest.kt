@@ -1,6 +1,7 @@
 package com.example.moviedd.ui
 
 import com.example.moviedd.BaseTest
+import com.example.moviedd.data.database.helper.AutoCompleteSearchSystem
 import com.example.moviedd.domain.api.repository.TvShowApiRepo
 import com.example.moviedd.domain.database.repository.TvShowDBRepo
 import com.example.moviedd.domain.model.ShowInfo
@@ -33,13 +34,16 @@ class TvShowScreenViewModelTest : BaseTest() {
     private lateinit var tvShowDbRepo: TvShowDBRepo
 
     @RelaxedMockK
+    private lateinit var autoCompleteSearchSystem: AutoCompleteSearchSystem
+
+    @RelaxedMockK
     private lateinit var tvShowApiRepo: TvShowApiRepo
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun setUp() {
         super.setUp()
         Dispatchers.setMain(TestCoroutineDispatcher())
-        target = TvShowScreenViewModel(tvShowDbRepo, tvShowApiRepo)
+        target = TvShowScreenViewModel(tvShowDbRepo, tvShowApiRepo, autoCompleteSearchSystem)
 
         val showInfoList = mockk<List<ShowInfo>>()
 
@@ -72,7 +76,7 @@ class TvShowScreenViewModelTest : BaseTest() {
         coVerify { tvShowApiRepo.downloadTvShows() }
         coVerify { tvShowDbRepo.getTvShows() }
 
-        val result = target.tvShowScreenUIState.tvShowList
+        val result = target.uiState.value.tvShowList
 
         assertEquals(2, result.size)
     }
@@ -83,13 +87,13 @@ class TvShowScreenViewModelTest : BaseTest() {
         coEvery { tvShowDbRepo.getTvShows() } returns mockShowInfoList()
 
         target.onEvent(TvShowScreenEvent.OnRefresh)
-        val resultBeforeSorting = target.tvShowScreenUIState.tvShowList
+        val resultBeforeSorting = target.uiState.value.tvShowList
 
         target.onEvent(TvShowScreenEvent.OnSortOptionChosen("Alphabetically"))
 
         coVerify { tvShowDbRepo.getTvShows() }
 
-        val resultAfterSorting = target.tvShowScreenUIState.tvShowList
+        val resultAfterSorting = target.uiState.value.tvShowList
 
         assertEquals("C TvShow", resultBeforeSorting.first().title)
         assertEquals("A TvShow", resultAfterSorting.first().title)
@@ -101,13 +105,13 @@ class TvShowScreenViewModelTest : BaseTest() {
         coEvery { tvShowDbRepo.getTvShows() } returns mockShowInfoList()
 
         target.onEvent(TvShowScreenEvent.OnRefresh)
-        val resultBeforeSorting = target.tvShowScreenUIState.tvShowList
+        val resultBeforeSorting = target.uiState.value.tvShowList
 
         target.onEvent(TvShowScreenEvent.OnSortOptionChosen("Air Date"))
 
         coVerify { tvShowDbRepo.getTvShows() }
 
-        val resultAfterSorting = target.tvShowScreenUIState.tvShowList
+        val resultAfterSorting = target.uiState.value.tvShowList
 
         assertEquals("10-01-22", resultBeforeSorting.first().airDate)
         assertEquals("09-01-22", resultAfterSorting.first().airDate)
@@ -119,13 +123,13 @@ class TvShowScreenViewModelTest : BaseTest() {
         coEvery { tvShowDbRepo.getTvShows() } returns mockShowInfoList()
 
         target.onEvent(TvShowScreenEvent.OnRefresh)
-        val resultBeforeSorting = target.tvShowScreenUIState.tvShowList
+        val resultBeforeSorting = target.uiState.value.tvShowList
 
         target.onEvent(TvShowScreenEvent.OnSortOptionChosen("Top Rated"))
 
         coVerify { tvShowDbRepo.getTvShows() }
 
-        val resultAfterSorting = target.tvShowScreenUIState.tvShowList
+        val resultAfterSorting = target.uiState.value.tvShowList
 
         assertEquals(8.9, resultBeforeSorting.first().rating)
         assertEquals(9.9, resultAfterSorting.first().rating)
@@ -137,7 +141,7 @@ class TvShowScreenViewModelTest : BaseTest() {
 
         target.onEvent(TvShowScreenEvent.OnDescriptionClicked(0, true))
 
-        val result = target.tvShowScreenUIState.descriptionMinimised[0]
+        val result = target.uiState.value.descriptionMinimised[0]
 
         assertEquals(false, result)
     }
@@ -145,12 +149,12 @@ class TvShowScreenViewModelTest : BaseTest() {
     @Test
     fun `updateCardLayout() - toggles the state of isGridView`() {
         // before
-        val isGridViewBefore = target.tvShowScreenUIState.isGridView
+        val isGridViewBefore = target.uiState.value.isGridView
 
         target.onEvent(TvShowScreenEvent.OnViewChanged(false))
 
         // after
-        val isGridViewAfter = target.tvShowScreenUIState.isGridView
+        val isGridViewAfter = target.uiState.value.isGridView
 
         assertEquals(false, isGridViewBefore)
         assertEquals(true, isGridViewAfter)
